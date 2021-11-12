@@ -1,3 +1,5 @@
+load("toolchain.bzl", "local_toolchain")
+
 """
 TODO:
   * Download bundles for each platform
@@ -9,42 +11,70 @@ TODO:
 """
 _PROMTOOL_CLI = "promtool"
 
-PROM_ARCHIVES = {
-    "linux_amd64": [
-      "https://github.com/prometheus/prometheus/releases/download/v2.31.1/prometheus-2.31.1.linux-amd64.tar.gz",
-    ],
-    "darwin_x86": [
+_PROM_ARCHIVES = {
+    "linux_amd64": {
+      "archives": [
+        "https://github.com/prometheus/prometheus/releases/download/v2.31.1/prometheus-2.31.1.linux-amd64.tar.gz",
+      ],
+      "sha256": "7852dc11cfaa039577c1804fe6f082a07c5eb06be50babcffe29214aedf318b3",
+      "strip_prefix": "prometheus-2.31.1.linux-amd64",
+    },
+    "darwin_x86": {
+      "archives": [
         "https://github.com/prometheus/prometheus/releases/download/v2.31.1/prometheus-2.31.1.darwin-amd64.tar.gz",
-    ],
+      ],
+      "sha256": "4ef3cbd521b7b77105a6ec617f43b86e4c8461746d27ac6a2548bb618ca0250c",
+      "strip_prefix": "prometheus-2.31.1.darwin-amd64",
+    },
 }
 
 def _prom_sdk_impl(ctx):
   ctx.report_progress("Downloading and extracting Promtool executable")
+
   ctx.download_and_extract(
-    url = [
-      # "https://github.com/prometheus/prometheus/releases/download/v2.31.1/prometheus-2.31.1.linux-amd64.tar.gz",
-      "https://github.com/prometheus/prometheus/releases/download/v2.31.1/prometheus-2.31.1.darwin-amd64.tar.gz",
-    ],
-    # stripPrefix = "prometheus-2.31.1.linux-amd64",
-    stripPrefix = "prometheus-2.31.1.darwin-amd64",
+    url = _PROM_ARCHIVES[ctx.attr.platform]["archives"],
+    stripPrefix = _PROM_ARCHIVES[ctx.attr.platform]["strip_prefix"],
+    sha256 = _PROM_ARCHIVES[ctx.attr.platform]["sha256"],
   )
 
-  ctx.file("BUILD", 'exports_files(["promtool"])')
+  if ctx.attr.os == "darwin":
+      os_constraint = "@platforms//os:macos"
+  elif ctx.attr.os == "linux":
+      os_constraint = "@platforms//os:linux"
+  else:
+      fail("unsupported os type " + ctx.attr.os)
 
-_prom_sdk = repository_rule(
+  if ctx.attr.arch == "x86":
+      arch_constraint = "@platforms//cpu:x86_64"
+  else:
+      fail("unsupported architecture type " + ctx.attr.os)
+
+  constraint_fmt = ",\n        ".join(['"%s"' % c for c in [os_constraint, arch_constraint]])
+
+  ctx.template(
+    "BUILD",
+    ctx.attr._build_tpl,
+    substitutions = {
+      "{platform}": ctx.attr.platform,
+      "{constraints}": constraint_fmt,
+    }
+  )
+
+prom_sdk = repository_rule(
   implementation = _prom_sdk_impl,
+  attrs = {
+    "platform": attr.string(mandatory = True, doc = ""),
+    "os": attr.string(
+      values = ["darwin", "linux"],
+      mandatory = True,
+    ),
+    "arch": attr.string(
+      values = ["x86"],
+      mandatory = True,
+    ),
+    "_build_tpl": attr.label(
+      default = "//:BUILD.bzl.tpl",
+    ),
+  },
+  doc = "Installs Prometheus standard tooling.",
 )
-
-def prom_sdk(name="default"):
-  _prom_sdk(name=name)
-
-def _levant_sdk_impl(ctx):
-  ctx.report_progress("Downloading and extracting Levant executable")
-  pass
-
-_levant_sdk = repository_rule(
-  implementation = _levant_sdk_impl,
-)
-
-def levant_sdk(name="levant"):
-  _levant_sdk(name=name)

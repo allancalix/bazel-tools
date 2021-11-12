@@ -1,9 +1,6 @@
 def _prom_test_impl(ctx):
-    args = ["test", "rules"]
-
-    print(ctx.toolchains["//:toolchain_type"].promtool)
     cmd = " ".join([
-      ctx.toolchains["//:toolchain_type"].promtool,
+      ctx.toolchains["//:toolchain_type"].promtool.path,
       "test",
       "rules",
     ] + [f.path for f in ctx.files.srcs])
@@ -14,7 +11,7 @@ def _prom_test_impl(ctx):
     )
 
     runfiles = ctx.files.srcs + ctx.files.rules + [
-      ctx.executable.promtool,
+      ctx.toolchains["//:toolchain_type"].promtool,
     ]
     return [DefaultInfo(runfiles = ctx.runfiles(runfiles))]
 
@@ -24,12 +21,6 @@ prom_test = rule(
     attrs = {
         "srcs": attr.label_list(allow_files = True),
         "rules": attr.label_list(allow_files = True),
-        "promtool": attr.label(
-            executable = True,
-            allow_files = True,
-            cfg = "exec",
-            default = Label("@default//:promtool"),
-        ),
     },
     toolchains = ["//:toolchain_type"],
 )

@@ -1,6 +1,6 @@
 def _toolchain_impl(ctx):
   toolchain_info = platform_common.ToolchainInfo(
-        promtool = ctx.executable.promtool.path,
+        promtool = ctx.executable.promtool,
   )
 
   return [toolchain_info]
@@ -11,8 +11,8 @@ local_toolchain = rule(
         "promtool": attr.label(
             executable = True,
             allow_files = True,
+            mandatory = True,
             cfg = "exec",
-            default = Label("@default//:promtool"),
         ),
     },
     doc = "fooobar",
