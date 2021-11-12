@@ -4,8 +4,6 @@ TODO:
   * Add opa tool chain
   * Add opa bundle / test rules
 """
-_PROMTOOL_CLI = "promtool"
-
 _PROM_ARCHIVES = {
     "linux_amd64": {
       "archives": [
@@ -38,6 +36,21 @@ _LEVANT_ARCHIVES = {
     },
 }
 
+_NOMAD_ARCHIVES = {
+    "linux_amd64": {
+      "archives": [
+        "https://releases.hashicorp.com/nomad/1.1.6/nomad_1.1.6_linux_amd64.zip",
+      ],
+      "sha256": "93f287758a464930e35cd1866167f05a3a6a48af2b0e010dfc0fbc914ae2f830",
+    },
+    "darwin_x86": {
+      "archives": [
+        "https://releases.hashicorp.com/nomad/1.1.6/nomad_1.1.6_darwin_amd64.zip",
+      ],
+      "sha256": "861e87b6ba0e0eb612406fbbdc85ee35ffe83f8c12d307df748a8d57e3b71e40",
+    },
+}
+
 def _prom_sdk_impl(ctx):
   ctx.report_progress("Downloading and extracting Promtool executable")
 
@@ -50,6 +63,11 @@ def _prom_sdk_impl(ctx):
   ctx.download_and_extract(
     url = _LEVANT_ARCHIVES[ctx.attr.platform]["archives"],
     sha256 = _LEVANT_ARCHIVES[ctx.attr.platform]["sha256"],
+  )
+
+  ctx.download_and_extract(
+    url = _NOMAD_ARCHIVES[ctx.attr.platform]["archives"],
+    sha256 = _NOMAD_ARCHIVES[ctx.attr.platform]["sha256"],
   )
 
   if ctx.attr.os == "darwin":

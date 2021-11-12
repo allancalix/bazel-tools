@@ -1,4 +1,4 @@
-load("@rules_acx_tools//:def.bzl", "levant")
+load("@rules_acx_tools//:def.bzl", "levant", "nomad_deploy")
 
 levant(
     name = "job_def",
@@ -6,4 +6,9 @@ levant(
     vars_files = [
         "vars.yaml",
     ],
+)
+
+nomad_deploy(
+  name = "deploy_job",
+  job = ":job_def",
 )

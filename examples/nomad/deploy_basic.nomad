@@ -2,7 +2,7 @@
 
 job "[[.job_name]]" {
 
-  datacenters = ["dc1"]
+  datacenters = ["us-west-1"]
   type = "service"
   update {
     max_parallel     = 1
@@ -13,7 +13,6 @@ job "[[.job_name]]" {
   }
 
   group "test" {
-
     count = 1
     restart {
       attempts = 10
@@ -21,6 +20,7 @@ job "[[.job_name]]" {
       delay = "25s"
       mode = "delay"
     }
+
     ephemeral_disk {
       size = 300
     }
@@ -34,6 +34,7 @@ job "[[.job_name]]" {
           "-f", "/dev/null"
         ]
       }
+
       resources {
         cpu    = 100
         memory = 128

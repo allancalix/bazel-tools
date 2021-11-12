@@ -2,6 +2,7 @@ def _toolchain_impl(ctx):
   toolchain_info = platform_common.ToolchainInfo(
         promtool = ctx.executable.promtool,
         levant = ctx.executable.levant,
+        nomad = ctx.executable.nomad,
   )
 
   return [toolchain_info]
@@ -16,6 +17,12 @@ toolchain = rule(
             cfg = "exec",
         ),
         "levant": attr.label(
+            executable = True,
+            allow_files = True,
+            mandatory = True,
+            cfg = "exec",
+        ),
+        "nomad": attr.label(
             executable = True,
             allow_files = True,
             mandatory = True,
