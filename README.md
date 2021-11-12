@@ -4,20 +4,22 @@ tools.
 
 ## Tools
 
-    * [Prometheus](https://github.com/prometheus/prometheus)
-        * Alerts and recorded expression unit tests
+* [Prometheus](https://github.com/prometheus/prometheus)
+  * Alerts and recorded expression unit tests
 
-    * [Opa](https://github.com/open-policy-agent/opa)
-        * Rule for testing Opa policies
-        * Rule for compiling data and policy files into bundles
+* [Opa](https://github.com/open-policy-agent/opa)
+  * Rule for testing Opa policies
 
-    * [Nomad](https://github.com/hashicorp/nomad)
-        * Rule for rendering a job definition using [Levant](https://github.com/hashicorp/levant)
-        * Rule for deploying to nomad `nomad run`
+  * Rule for compiling data and policy files into bundles
+
+* [Nomad](https://github.com/hashicorp/nomad)
+  * Rule for rendering a job definition using [Levant](https://github.com/hashicorp/levant)
+
+  * Rule for deploying to nomad `nomad run`
 
 ## Rules
 
-* [Prometheus Rules](./internal/prometheus_rules)
+* [Prometheus Rules](./internal/prometheus_rules.md)
 
 ## Caveats
 These rules are meant to support my own day-to-day activities and are not meant
