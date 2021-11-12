@@ -3,6 +3,7 @@ def _toolchain_impl(ctx):
         promtool = ctx.executable.promtool,
         levant = ctx.executable.levant,
         nomad = ctx.executable.nomad,
+        opa = ctx.executable.opa,
   )
 
   return [toolchain_info]
@@ -23,6 +24,12 @@ toolchain = rule(
             cfg = "exec",
         ),
         "nomad": attr.label(
+            executable = True,
+            allow_files = True,
+            mandatory = True,
+            cfg = "exec",
+        ),
+        "opa": attr.label(
             executable = True,
             allow_files = True,
             mandatory = True,

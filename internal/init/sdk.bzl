@@ -51,6 +51,21 @@ _NOMAD_ARCHIVES = {
     },
 }
 
+_OPA_ARCHIVES = {
+    "linux_amd64": {
+      "archives": [
+        "https://github.com/open-policy-agent/opa/releases/download/v0.34.2/opa_linux_amd64",
+      ],
+      "sha256": "fc4263ff0a574f44814c9986c9ebdc8067cc5ea0b562fdde82f9089d90041019",
+    },
+    "darwin_x86": {
+      "archives": [
+        "https://github.com/open-policy-agent/opa/releases/download/v0.34.2/opa_darwin_amd64",
+      ],
+      "sha256": "3cd868055a241362915176e064da64d542d38d4def9dfe60e655d0fa2a4c5c0d",
+    },
+}
+
 def _prom_sdk_impl(ctx):
   ctx.report_progress("Downloading and extracting Promtool executable")
 
@@ -68,6 +83,13 @@ def _prom_sdk_impl(ctx):
   ctx.download_and_extract(
     url = _NOMAD_ARCHIVES[ctx.attr.platform]["archives"],
     sha256 = _NOMAD_ARCHIVES[ctx.attr.platform]["sha256"],
+  )
+
+  ctx.download(
+    url = _OPA_ARCHIVES[ctx.attr.platform]["archives"],
+    output = "opa",
+    executable = True,
+    sha256 = _OPA_ARCHIVES[ctx.attr.platform]["sha256"],
   )
 
   if ctx.attr.os == "darwin":
