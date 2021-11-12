@@ -33,6 +33,10 @@ load("//:go_deps.bzl", "go_vendor")
 # gazelle:repository_macro go_deps.bzl%go_vendor
 go_vendor()
 
+register_toolchains(
+    "//:barc_darwin_toolchain",
+)
+
 load(":sdk.bzl", "prom_sdk")
 
 prom_sdk()

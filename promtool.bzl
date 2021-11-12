@@ -1,8 +1,9 @@
 def _prom_test_impl(ctx):
     args = ["test", "rules"]
 
+    print(ctx.toolchains["//:toolchain_type"].promtool)
     cmd = " ".join([
-      ctx.executable.promtool.path,
+      ctx.toolchains["//:toolchain_type"].promtool,
       "test",
       "rules",
     ] + [f.path for f in ctx.files.srcs])
@@ -30,4 +31,5 @@ prom_test = rule(
             default = Label("@default//:promtool"),
         ),
     },
+    toolchains = ["//:toolchain_type"],
 )
