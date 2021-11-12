@@ -1,0 +1,8 @@
+# Improve bazel output for debugging.
+common --curses=no
+build --verbose_failures
+build --worker_verbose
+test --test_output=errors
+test --test_verbose_timeout_warnings
+test --test_tmpdir=/tmp
+

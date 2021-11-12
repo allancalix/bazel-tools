@@ -1,0 +1,37 @@
+name: Test
+on:
+  push:
+    branches:
+      - main
+jobs:
+  check:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["macos-latest", "ubuntu-20.04"]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Mount bazel repo cache
+        uses: actions/cache@v2
+        if: runner.os == 'macOS'
+        with:
+          path: "/private/var/tmp/_bazel_runner"
+          key: bazel_${{ runner.os }}_${{ github.job }}_1
+          restore-keys: |
+            bazel_${{ runner.os }}_${{ github.job }}_1
+      - name: Mount bazel repo cache
+        uses: actions/cache@v2
+        if: runner.os == 'Linux'
+        with:
+          path: "/home/runner/.cache/bazel"
+          key: bazel_${{ runner.os }}_${{ github.job }}_1
+          restore-keys: |
+            bazel_${{ runner.os }}_${{ github.job }}_1
+      - name: Copy Bazel configuration
+        run: |
+          echo "Copying ci/bazelrc to ${PWD}/.bazelrc"
+          cp ci/bazelrc .bazelrc
+      - name: Check build rules examples
+        run: |
+          bazelisk build //examples/...
+          bazelisk test //...
