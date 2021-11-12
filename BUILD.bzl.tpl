@@ -1,10 +1,11 @@
 load("@rules_acx_tools//:toolchain.bzl", "local_toolchain")
 
-exports_files(["promtool"])
+exports_files(["promtool", "levant"])
 
 local_toolchain(
   name = "toolchain_impl",
   promtool = "promtool",
+  levant = "levant",
 )
 
 toolchain(

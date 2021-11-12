@@ -1,6 +1,7 @@
 """Defines rules for rendering levant templates and deploying to Nomad."""
 
 def _levant_impl(ctx):
+    toolchain = ctx.toolchains["//:toolchain_type"]
     out = ctx.actions.declare_file(ctx.label.name + ".hcl")
 
     args = ["render", "-out", out.path]
@@ -15,7 +16,7 @@ def _levant_impl(ctx):
         inputs = ctx.files.srcs + ctx.files.vars_files + ctx.files.data,
         outputs = [out],
         arguments = args,
-        executable = ctx.executable.levant,
+        executable = toolchain.levant,
     )
 
     return [DefaultInfo(files = depset([out]))]
@@ -26,13 +27,8 @@ levant = rule(
         "srcs": attr.label_list(allow_files = True),
         "vars_files": attr.label_list(allow_files = True),
         "data": attr.label_list(allow_files = True),
-        "levant": attr.label(
-            executable = True,
-            cfg = "exec",
-            allow_files = True,
-            default = Label("@com_github_hashicorp_levant//:levant"),
-        ),
     },
+    toolchains = ["//:toolchain_type"],
 )
 
 def _nomad_impl(ctx):

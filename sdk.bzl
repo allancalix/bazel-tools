@@ -28,6 +28,21 @@ _PROM_ARCHIVES = {
     },
 }
 
+_LEVANT_ARCHIVES = {
+    "linux_amd64": {
+      "archives": [
+        "https://releases.hashicorp.com/levant/0.3.0/levant_0.3.0_linux_amd64.zip",
+      ],
+      "sha256": "082bd747cf49bc317035a4caab8742924eac67605a82b1b5f4640d896999ea98",
+    },
+    "darwin_x86": {
+      "archives": [
+        "https://releases.hashicorp.com/levant/0.3.0/levant_0.3.0_darwin_amd64.zip",
+      ],
+      "sha256": "cbe353c218135f7dfce301b7f667138520958e17925cbebbf01c70ebb152be45",
+    },
+}
+
 def _prom_sdk_impl(ctx):
   ctx.report_progress("Downloading and extracting Promtool executable")
 
@@ -35,6 +50,11 @@ def _prom_sdk_impl(ctx):
     url = _PROM_ARCHIVES[ctx.attr.platform]["archives"],
     stripPrefix = _PROM_ARCHIVES[ctx.attr.platform]["strip_prefix"],
     sha256 = _PROM_ARCHIVES[ctx.attr.platform]["sha256"],
+  )
+
+  ctx.download_and_extract(
+    url = _LEVANT_ARCHIVES[ctx.attr.platform]["archives"],
+    sha256 = _LEVANT_ARCHIVES[ctx.attr.platform]["sha256"],
   )
 
   if ctx.attr.os == "darwin":
