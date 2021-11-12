@@ -15,3 +15,7 @@ test_get_user_allowed {
 test_get_another_user_denied {
     not allow with input as {"path": ["users", "bob"], "method": "GET", "user_id": "alice"}
 }
+
+test_data_import_works {
+    allow with input as {"user": "bazel-tester"}
+}

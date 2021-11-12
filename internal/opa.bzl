@@ -4,14 +4,14 @@ def _opa_test_impl(ctx):
     cmd = " ".join([
       opa.path,
       "test",
-    ] + [f.path for f in ctx.files.srcs])
+    ] + [f.path for f in ctx.files.srcs] + [f.path for f in ctx.files.data])
 
     ctx.actions.write(
       output = ctx.outputs.executable,
       content = cmd,
     )
 
-    runfiles = ctx.files.srcs + [opa]
+    runfiles = ctx.files.srcs + ctx.files.data + [opa]
     return [DefaultInfo(runfiles = ctx.runfiles(runfiles))]
 
 opa_test = rule(
@@ -21,6 +21,10 @@ opa_test = rule(
         "srcs": attr.label_list(
           allow_files = True,
           mandatory = True,
+        ),
+        "data": attr.label_list(
+          allow_files = True,
+          default = [],
         ),
     },
     toolchains = ["//:toolchain_type"],
@@ -34,10 +38,10 @@ def _opa_bundle_impl(ctx):
       "build",
       "-t", ctx.attr.type,
       "-o", bundle.path,
-    ] + [f.path for f in ctx.files.srcs]
+    ] + [f.path for f in ctx.files.srcs] + [f.path for f in ctx.files.data]
 
     ctx.actions.run(
-        inputs = ctx.files.srcs,
+        inputs = ctx.files.srcs + ctx.files.data,
         outputs = [bundle],
         arguments = args,
         executable = opa,
@@ -51,6 +55,10 @@ opa_bundle = rule(
         "srcs": attr.label_list(
           allow_files = True,
           mandatory = True,
+        ),
+        "data": attr.label_list(
+          allow_files = True,
+          default = [],
         ),
         "type": attr.string(
           values = ["rego", "wasm"],

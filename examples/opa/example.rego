@@ -11,3 +11,7 @@ allow {
     input.method == "GET"
     profile_id == input.user_id
 }
+
+allow {
+    input.user = data.user
+}
