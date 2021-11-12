@@ -19,6 +19,8 @@ tools.
 
 ## Rules
 
+* [Nomad Rules](./internal/nomad_rules.md)
+* [Opa Rules](./internal/opa_rules.md)
 * [Prometheus Rules](./internal/prometheus_rules.md)
 
 ## Caveats

@@ -3,9 +3,9 @@
 A toolkit for working with a variety of common open source tools. These tools are
 meant to unify testing, building, and execution for tools I commonly use.
 """
+
 load("//internal:prometheus.bzl", _prom_test = "prom_test")
-load("//internal:levant.bzl", _levant = "levant")
-load("//internal:nomad.bzl", _nomad_deploy = "nomad_deploy")
+load("//internal:nomad.bzl", _levant = "levant", _nomad_deploy = "nomad_deploy")
 load("//internal:opa.bzl", _opa_test = "opa_test", _opa_bundle = "opa_bundle")
 load("//internal/init:toolchain.bzl", _toolchain = "toolchain")
 
