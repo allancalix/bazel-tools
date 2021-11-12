@@ -1,10 +1,5 @@
-load("toolchain.bzl", "local_toolchain")
-
 """
 TODO:
-  * Download bundles for each platform
-  * Register toolchains for each platform
-  * Download levant via gh release archives
   * Add nomad repo rule
   * Add opa tool chain
   * Add opa bundle / test rules
@@ -93,7 +88,7 @@ prom_sdk = repository_rule(
       mandatory = True,
     ),
     "_build_tpl": attr.label(
-      default = "//:BUILD.bzl.tpl",
+      default = "//internal/init:BUILD.bzl.tpl",
     ),
   },
   doc = "Installs Prometheus standard tooling.",

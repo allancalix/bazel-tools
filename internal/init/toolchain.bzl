@@ -6,7 +6,7 @@ def _toolchain_impl(ctx):
 
   return [toolchain_info]
 
-local_toolchain = rule(
+toolchain = rule(
     implementation = _toolchain_impl,
     attrs = {
         "promtool": attr.label(

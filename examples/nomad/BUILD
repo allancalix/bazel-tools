@@ -1,4 +1,4 @@
-load("//:hashi.bzl", "levant")
+load("@rules_acx_tools//:def.bzl", "levant")
 
 levant(
     name = "job_def",

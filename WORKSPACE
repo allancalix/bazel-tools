@@ -1,6 +1,6 @@
 workspace(name = "rules_acx_tools")
 
-load(":sdk.bzl", "prom_sdk")
+load("//internal/init:sdk.bzl", "prom_sdk")
 
 prom_sdk(
   name = "tools_darwin_x86",
