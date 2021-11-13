@@ -21,23 +21,7 @@ load("@io_bazel_stardoc//:setup.bzl", "stardoc_repositories")
 
 stardoc_repositories()
 
-load("//internal/init:sdk.bzl", "prom_sdk")
+load("@rules_acx_tools//:deps.bzl", "acx_register_toolchains")
 
-prom_sdk(
-    name = "tools_darwin_x86",
-    arch = "x86",
-    os = "darwin",
-    platform = "darwin_x86",
-)
+acx_register_toolchains()
 
-prom_sdk(
-    name = "tools_linux_amd64",
-    arch = "x86",
-    os = "linux",
-    platform = "linux_amd64",
-)
-
-register_toolchains(
-    "@tools_darwin_x86//:toolchain",
-    "@tools_linux_amd64//:toolchain",
-)
