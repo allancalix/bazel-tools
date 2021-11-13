@@ -2,7 +2,7 @@
 
 def _prom_test_impl(ctx):
     cmd = " ".join([
-        ctx.toolchains["//:toolchain_type"].promtool.path,
+        ctx.toolchains["@rules_acx_tools//:toolchain_type"].promtool.path,
         "test",
         "rules",
     ] + [f.path for f in ctx.files.srcs])
@@ -13,7 +13,7 @@ def _prom_test_impl(ctx):
     )
 
     runfiles = ctx.files.srcs + ctx.files.rules + [
-        ctx.toolchains["//:toolchain_type"].promtool,
+        ctx.toolchains["@rules_acx_tools//:toolchain_type"].promtool,
     ]
     return [DefaultInfo(runfiles = ctx.runfiles(runfiles))]
 
@@ -44,5 +44,5 @@ Example:
             mandatory = True,
         ),
     },
-    toolchains = ["//:toolchain_type"],
+    toolchains = ["@rules_acx_tools//:toolchain_type"],
 )

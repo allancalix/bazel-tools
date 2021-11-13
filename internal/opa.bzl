@@ -1,5 +1,5 @@
 def _opa_test_impl(ctx):
-    opa = ctx.toolchains["//:toolchain_type"].opa
+    opa = ctx.toolchains["@rules_acx_tools//:toolchain_type"].opa
 
     cmd = " ".join([
         opa.path,
@@ -43,11 +43,11 @@ opa_test(
             doc = "Static data files to include in the test, could be mock data required by policies.",
         ),
     },
-    toolchains = ["//:toolchain_type"],
+    toolchains = ["@rules_acx_tools//:toolchain_type"],
 )
 
 def _opa_bundle_impl(ctx):
-    opa = ctx.toolchains["//:toolchain_type"].opa
+    opa = ctx.toolchains["@rules_acx_tools//:toolchain_type"].opa
     bundle = ctx.actions.declare_file(ctx.label.name + ".bundle.tar.gz")
 
     args = [
@@ -104,5 +104,5 @@ opa_bundle(
             doc = "Set the output bundle target type (default rego).",
         ),
     },
-    toolchains = ["//:toolchain_type"],
+    toolchains = ["@rules_acx_tools//:toolchain_type"],
 )

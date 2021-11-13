@@ -1,7 +1,7 @@
 """Rules for working with Nomad job definition files."""
 
 def _levant_impl(ctx):
-    toolchain = ctx.toolchains["//:toolchain_type"]
+    toolchain = ctx.toolchains["@rules_acx_tools//:toolchain_type"]
     out = ctx.actions.declare_file(ctx.label.name + ".hcl")
 
     args = ["render", "-out", out.path]
@@ -65,11 +65,11 @@ be included as data.
 """,
         ),
     },
-    toolchains = ["//:toolchain_type"],
+    toolchains = ["@rules_acx_tools//:toolchain_type"],
 )
 
 def _nomad_deploy_impl(ctx):
-    toolchain = ctx.toolchains["//:toolchain_type"]
+    toolchain = ctx.toolchains["@rules_acx_tools//:toolchain_type"]
 
     script = ctx.actions.declare_file(ctx.label.name + ".deploy")
     command = " ".join([toolchain.nomad.path, "run", ctx.file.job.short_path])
@@ -109,5 +109,5 @@ nomad_deploy(
         ),
     },
     executable = True,
-    toolchains = ["//:toolchain_type"],
+    toolchains = ["@rules_acx_tools//:toolchain_type"],
 )
