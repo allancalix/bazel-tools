@@ -17,3 +17,9 @@ stardoc(
     out = "nomad_rules.md",
     input = "nomad.bzl",
 )
+
+stardoc(
+    name = "vector_docs",
+    out = "vector_rules.md",
+    input = "vector.bzl",
+)

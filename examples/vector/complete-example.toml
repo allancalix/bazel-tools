@@ -1,0 +1,39 @@
+# Set global options
+data_dir = "/var/lib/vector"
+
+# Vector's API (disabled by default)
+# Enable and try it out with the `vector top` command
+[api]
+enabled = false
+# address = "127.0.0.1:8686"
+
+# Ingest data by tailing one or more files
+[sources.apache_logs]
+type         = "file"
+include      = ["/var/log/apache2/*.log"]    # supports globbing
+ignore_older = 86400                         # 1 day
+
+# Structure and parse via Vector's Remap Language
+[transforms.apache_parser]
+inputs = ["apache_logs"]
+type   = "remap"
+source = '''
+. = parse_apache_log(.message)
+'''
+
+# Sample the data to save on cost
+[transforms.apache_sampler]
+inputs = ["apache_parser"]
+type   = "sampler"
+rate   = 50                   # only keep 50%
+
+# Send structured data to a cost-effective long-term storage
+[sinks.s3_archives]
+inputs          = ["apache_parser"]    # don't sample for S3
+type            = "aws_s3"
+region          = "us-east-1"
+bucket          = "my-log-archives"
+key_prefix      = "date=%Y-%m-%d"      # daily partitions, hive friendly format
+compression     = "gzip"               # compress final objects
+encoding        = "ndjson"             # new line delimited JSON
+batch.max_bytes = 10000000             # 10mb uncompressed
