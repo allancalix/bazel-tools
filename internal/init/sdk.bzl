@@ -93,7 +93,7 @@ _VECTOR_ARCHIVES = {
             "https://github.com/vectordotdev/vector/releases/download/v0.21.0/vector-0.21.0-x86_64-unknown-linux-gnu.tar.gz",
         ],
         "sha256": "753fe91b96f108a6c8d0378d9a633a1fa42a7d661c610c94685876a1dc055a00",
-        "strip_prefix": "vector-x86_64-unknown-linux-gnu",
+        "strip_prefix": "vector-x86_64-unknown-linux-gnu/bin",
     },
     "darwin_arm64": {
         "archives": [
