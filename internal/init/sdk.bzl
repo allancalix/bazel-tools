@@ -1,23 +1,24 @@
-"""
-TODO:
-  * Add nomad repo rule
-  * Add opa tool chain
-  * Add opa bundle / test rules
-"""
 _PROM_ARCHIVES = {
     "linux_amd64": {
         "archives": [
-            "https://github.com/prometheus/prometheus/releases/download/v2.31.1/prometheus-2.31.1.linux-amd64.tar.gz",
+            "https://github.com/prometheus/prometheus/releases/download/v2.34.0/prometheus-2.34.0.linux-amd64.tar.gz",
         ],
-        "sha256": "7852dc11cfaa039577c1804fe6f082a07c5eb06be50babcffe29214aedf318b3",
-        "strip_prefix": "prometheus-2.31.1.linux-amd64",
+        "sha256": "9ec560940bf53361dd9d3a867d51ceb96f3854ae12f5e532b7d3f60c27f364d0",
+        "strip_prefix": "prometheus-2.34.0.linux-amd64",
     },
     "darwin_x86": {
         "archives": [
-            "https://github.com/prometheus/prometheus/releases/download/v2.31.1/prometheus-2.31.1.darwin-amd64.tar.gz",
+            "https://github.com/prometheus/prometheus/releases/download/v2.34.0/prometheus-2.34.0.darwin-amd64.tar.gz",
         ],
-        "sha256": "4ef3cbd521b7b77105a6ec617f43b86e4c8461746d27ac6a2548bb618ca0250c",
-        "strip_prefix": "prometheus-2.31.1.darwin-amd64",
+        "sha256": "8b7af5708d91846fc99db2ae56b06e2ecf953319414f0be85bf882739dcf3dc7",
+        "strip_prefix": "prometheus-2.34.0.darwin-amd64",
+    },
+    "darwin_arm64": {
+        "archives": [
+            "https://github.com/prometheus/prometheus/releases/download/v2.34.0/prometheus-2.34.0.darwin-arm64.tar.gz",
+        ],
+        "sha256": "be8a8d2528512d22ea804934090461ebd432bf0cbaf545dd36e41e5a8e96235e",
+        "strip_prefix": "prometheus-2.34.0.darwin-arm64",
     },
 }
 
@@ -27,6 +28,13 @@ _LEVANT_ARCHIVES = {
             "https://releases.hashicorp.com/levant/0.3.0/levant_0.3.0_linux_amd64.zip",
         ],
         "sha256": "082bd747cf49bc317035a4caab8742924eac67605a82b1b5f4640d896999ea98",
+    },
+    # TODO(allancalix): Fix to proper arm64 builds, but amd64 builds seem to work fine?
+    "darwin_arm64": {
+        "archives": [
+            "https://releases.hashicorp.com/levant/0.3.0/levant_0.3.0_darwin_amd64.zip",
+        ],
+        "sha256": "cbe353c218135f7dfce301b7f667138520958e17925cbebbf01c70ebb152be45",
     },
     "darwin_x86": {
         "archives": [
@@ -39,30 +47,43 @@ _LEVANT_ARCHIVES = {
 _NOMAD_ARCHIVES = {
     "linux_amd64": {
         "archives": [
-            "https://releases.hashicorp.com/nomad/1.1.6/nomad_1.1.6_linux_amd64.zip",
+            "https://releases.hashicorp.com/nomad/1.2.6/nomad_1.2.6_linux_amd64.zip",
         ],
-        "sha256": "93f287758a464930e35cd1866167f05a3a6a48af2b0e010dfc0fbc914ae2f830",
+        "sha256": "a7bee57db3c3a595ecba964f7afee9c32ebb6799eb7a1682deb0a7cd8e7d08c0",
+    },
+    # TODO(allancalix): Fix to proper arm64 builds, but amd64 builds seem to work fine?
+    "darwin_arm64": {
+        "archives": [
+            "https://releases.hashicorp.com/nomad/1.2.6/nomad_1.2.6_darwin_amd64.zip",
+        ],
+        "sha256": "34d09fbfa9829fbe8660fc721d82fd867f8aa462c277f1a6f1046c731c81af23",
     },
     "darwin_x86": {
         "archives": [
-            "https://releases.hashicorp.com/nomad/1.1.6/nomad_1.1.6_darwin_amd64.zip",
+            "https://releases.hashicorp.com/nomad/1.2.6/nomad_1.2.6_darwin_amd64.zip",
         ],
-        "sha256": "861e87b6ba0e0eb612406fbbdc85ee35ffe83f8c12d307df748a8d57e3b71e40",
+        "sha256": "34d09fbfa9829fbe8660fc721d82fd867f8aa462c277f1a6f1046c731c81af23",
     },
 }
 
 _OPA_ARCHIVES = {
     "linux_amd64": {
         "archives": [
-            "https://github.com/open-policy-agent/opa/releases/download/v0.34.2/opa_linux_amd64",
+            "https://github.com/open-policy-agent/opa/releases/download/v0.39.0/opa_linux_amd64_static",
         ],
-        "sha256": "fc4263ff0a574f44814c9986c9ebdc8067cc5ea0b562fdde82f9089d90041019",
+        "sha256": "19a24f51d954190c02aafeac5867c9add286c6ab12ea85b3d8d348c98d633319",
+    },
+    "darwin_arm64": {
+        "archives": [
+            "https://github.com/open-policy-agent/opa/releases/download/v0.39.0/opa_darwin_arm64_static",
+        ],
+        "sha256": "d756bbf051249fcbeb27805480da94eeffa81290906879258457ea701bbc0e55",
     },
     "darwin_x86": {
         "archives": [
-            "https://github.com/open-policy-agent/opa/releases/download/v0.34.2/opa_darwin_amd64",
+            "https://github.com/open-policy-agent/opa/releases/download/v0.39.0/opa_darwin_amd64",
         ],
-        "sha256": "3cd868055a241362915176e064da64d542d38d4def9dfe60e655d0fa2a4c5c0d",
+        "sha256": "c2a597cd19679bec805f642160bf3255450452834b94efac4981c127861cfada",
     },
 }
 
@@ -101,8 +122,10 @@ def _prom_sdk_impl(ctx):
 
     if ctx.attr.arch == "x86":
         arch_constraint = "@platforms//cpu:x86_64"
+    elif ctx.attr.arch == "arm64":
+        arch_constraint = "@platforms//cpu:arm64"
     else:
-        fail("unsupported architecture type " + ctx.attr.os)
+        fail("unsupported architecture type " + ctx.attr.arch)
 
     constraint_fmt = ",\n        ".join(['"%s"' % c for c in [os_constraint, arch_constraint]])
 
@@ -124,7 +147,7 @@ prom_sdk = repository_rule(
             mandatory = True,
         ),
         "arch": attr.string(
-            values = ["x86"],
+            values = ["x86", "arm64"],
             mandatory = True,
         ),
         "_build_tpl": attr.label(
