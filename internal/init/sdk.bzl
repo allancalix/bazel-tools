@@ -107,7 +107,7 @@ _VECTOR_ARCHIVES = {
             "https://github.com/vectordotdev/vector/releases/download/v0.21.0/vector-0.21.0-x86_64-apple-darwin.tar.gz",
         ],
         "sha256": "75f76f7dea07a3dc0bae4404d3f52721c301875fe6ebbc98ab283656f7692cbb",
-        "strip_prefix": "vector-x86_64-apple-darwin",
+        "strip_prefix": "vector-x86_64-apple-darwin/bin",
     },
 }
 
