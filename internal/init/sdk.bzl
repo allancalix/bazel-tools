@@ -87,6 +87,30 @@ _OPA_ARCHIVES = {
     },
 }
 
+_VECTOR_ARCHIVES = {
+    "linux_amd64": {
+        "archives": [
+            "https://github.com/vectordotdev/vector/releases/download/v0.21.0/vector-0.21.0-x86_64-unknown-linux-gnu.tar.gz",
+        ],
+        "sha256": "753fe91b96f108a6c8d0378d9a633a1fa42a7d661c610c94685876a1dc055a00",
+        "strip_prefix": "vector-x86_64-unknown-linux-gnu",
+    },
+    "darwin_arm64": {
+        "archives": [
+            "https://github.com/vectordotdev/vector/releases/download/v0.21.0/vector-0.21.0-x86_64-apple-darwin.tar.gz",
+        ],
+        "sha256": "75f76f7dea07a3dc0bae4404d3f52721c301875fe6ebbc98ab283656f7692cbb",
+        "strip_prefix": "vector-x86_64-apple-darwin/bin",
+    },
+    "darwin_x86": {
+        "archives": [
+            "https://github.com/vectordotdev/vector/releases/download/v0.21.0/vector-0.21.0-x86_64-apple-darwin.tar.gz",
+        ],
+        "sha256": "75f76f7dea07a3dc0bae4404d3f52721c301875fe6ebbc98ab283656f7692cbb",
+        "strip_prefix": "vector-x86_64-apple-darwin",
+    },
+}
+
 def _prom_sdk_impl(ctx):
     ctx.report_progress("Downloading and extracting Promtool executable")
 
@@ -104,6 +128,13 @@ def _prom_sdk_impl(ctx):
     ctx.download_and_extract(
         url = _NOMAD_ARCHIVES[ctx.attr.platform]["archives"],
         sha256 = _NOMAD_ARCHIVES[ctx.attr.platform]["sha256"],
+    )
+
+    ctx.download_and_extract(
+        url = _VECTOR_ARCHIVES[ctx.attr.platform]["archives"],
+        stripPrefix = _VECTOR_ARCHIVES[ctx.attr.platform]["strip_prefix"],
+        sha256 = _VECTOR_ARCHIVES[ctx.attr.platform]["sha256"],
+        type = "tar.gz",
     )
 
     ctx.download(

@@ -5,6 +5,7 @@ exports_files([
     "levant",
     "nomad",
     "opa",
+    "vector",
 ])
 
 acx_toolchain(
@@ -13,6 +14,7 @@ acx_toolchain(
     nomad = "nomad",
     opa = "opa",
     promtool = "promtool",
+    vector = "vector",
 )
 
 toolchain(

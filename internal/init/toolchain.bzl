@@ -4,6 +4,7 @@ def _toolchain_impl(ctx):
         levant = ctx.executable.levant,
         nomad = ctx.executable.nomad,
         opa = ctx.executable.opa,
+        vector = ctx.executable.vector,
     )
 
     return [toolchain_info]
@@ -24,6 +25,12 @@ toolchain = rule(
             cfg = "exec",
         ),
         "nomad": attr.label(
+            executable = True,
+            allow_files = True,
+            mandatory = True,
+            cfg = "exec",
+        ),
+        "vector": attr.label(
             executable = True,
             allow_files = True,
             mandatory = True,
